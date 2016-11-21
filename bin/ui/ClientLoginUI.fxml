@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="mainPane" maxHeight="360.0" maxWidth="480.0" prefHeight="320.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ClientLoginUIController">
+   <children>
+      <Label layoutX="41.0" layoutY="60.0" prefHeight="17.0" prefWidth="98.0" text="User Name" />
+      <Label layoutX="41.0" layoutY="117.0" prefHeight="17.0" prefWidth="166.0" text="Client Receive Port Number" />
+      <Button fx:id="logInButton" layoutX="206.0" layoutY="234.0" mnemonicParsing="false" onAction="#onClickLogInBtn" onMouseClicked="#onClickLogInBtn" onTouchPressed="#onClickLogInBtn" text="Log In" />
+      <MenuBar prefHeight="25.0" prefWidth="480.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem fx:id="aboutMenuBtn" mnemonicParsing="false" text="About" />
+                  <MenuItem fx:id="exitMenuBtn" mnemonicParsing="false" text="Exit" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <ImageView fx:id="logoWindow" fitHeight="227.0" fitWidth="225.0" layoutX="256.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+      		<image> 
+      		    <Image backgroundLoading="true" url="@logo.png" /> 
+      		</image> 
+      </ImageView>
+      <TextField fx:id="nameInputField" layoutX="41.0" layoutY="77.0" prefHeight="25.0" prefWidth="190.0" />
+      <TextField fx:id="portInputField" layoutX="41.0" layoutY="134.0" prefHeight="25.0" prefWidth="190.0" />
+      <Label layoutX="41.0" layoutY="173.0" prefHeight="17.0" prefWidth="177.0" text="Client Sending Port Number" />
+      <TextField fx:id="sendingPortInputField" layoutX="41.0" layoutY="190.0" prefHeight="25.0" prefWidth="190.0" />
+      <Label fx:id="infoLabel" layoutX="41.0" layoutY="266.0" prefHeight="17.0" prefWidth="225.0" />
+   </children>
+</AnchorPane>
