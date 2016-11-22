@@ -35,6 +35,7 @@ public class ChatConnectionManager {
 		Integer myRecPort = recSoc.getLocalPort();
 		String msgStr = new String(GlobalVariables.CHAT_ACTION + GlobalVariables.delimiter + myManager.getName() + GlobalVariables.delimiter + myAddr.getHostAddress() + 
 				GlobalVariables.delimiter + myRecPort.toString() + GlobalVariables.delimiter + message);
+		System.out.println(msgStr);
 		DatagramPacket msgPac = new DatagramPacket(msgStr.getBytes(), msgStr.length(), targetAddr, tarRecPort);
 		sendSoc.send(msgPac);
 	}
@@ -44,6 +45,10 @@ public class ChatConnectionManager {
 		sendSoc.close();
 		recSoc.close();
 		lisTh.endThread();
+	}
+	
+	public String getUserName(){
+		return targetAddr.getHostAddress();
 	}
 	
 	

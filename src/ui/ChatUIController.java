@@ -1,6 +1,7 @@
 package ui;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javafx.fxml.FXML;
@@ -29,7 +30,13 @@ public class ChatUIController extends AnchorPane{
 	//Chat "String" Address
 	@FXML public void onClickSendButton(){
 		String msg = messageInputArea.getText();
-		myManager.sendChatMessage(msg, targetAddr, tarPort);
+		try {
+			myManager.sendChatMessage(msg, targetAddr, tarPort);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		messageInputArea.clear();
 	}
 	
 	@FXML public void refreshDisplay(){
@@ -52,7 +59,9 @@ public class ChatUIController extends AnchorPane{
 	}
 	
 	public boolean isTargetChat(InetAddress tarAddr, Integer port){
-		if(targetAddr == tarAddr || tarPort == port){
+		
+		if(targetAddr.equals(tarAddr) || tarPort == port){
+			System.out.println("Target Found");
 			return true;
 		}
 		else{

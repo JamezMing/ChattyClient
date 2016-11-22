@@ -10,6 +10,7 @@ import java.util.Arrays;
 import org.tmatesoft.sqljet.core.SqlJetException;
 
 import common.GlobalVariables;
+import javafx.application.Platform;
 
 
 public class ClientListenThread extends Thread{
@@ -29,8 +30,6 @@ public class ClientListenThread extends Thread{
 			while(isRunning){
 				listSoc.receive(recPac);
 				System.out.println(new String(recPac.getData()));
-
-
 				if(new String(recPac.getData()).startsWith(GlobalVariables.REGISTER_SUCCESS)){
 					String strRec = new String(recPac.getData(),0,recPac.getLength());
 					myManager.decodeSecret(new BigInteger(strRec.split(GlobalVariables.delimiter)[2], 16).toByteArray());
@@ -44,15 +43,26 @@ public class ClientListenThread extends Thread{
 				else if(new String(recPac.getData()).startsWith(GlobalVariables.PUBLISH_SUCCESS)||new String(recPac.getData()).startsWith(GlobalVariables.PUBLISH_DENIED)){
 					myManager.popTimer();
 				}
-				if(new String(recPac.getData()).startsWith(GlobalVariables.CHAT_ACTION)){
+				else if(new String(recPac.getData()).startsWith(GlobalVariables.CHAT_ACTION)){
 					String str_receive = new String(recPac.getData(),0,recPac.getLength());
 					String[] msg_fields = str_receive.split(GlobalVariables.token);
 					System.out.println("Chat Message Received");
 					InetAddress addr = InetAddress.getByName(msg_fields[2]);
-					myManager.receiveChatMessage(msg_fields[4], addr, msg_fields[1], new Integer(msg_fields[3]));
-					System.out.println(str_receive);
-					recPac.setLength(1024);
+					Platform.runLater(new Runnable(){
+						public void run(){
+							try {
+								myManager.receiveChatMessage(msg_fields[4], addr, msg_fields[1], new Integer(msg_fields[3]));
+								System.out.println("Addr: " + msg_fields[2] + " " +  "Name: " + msg_fields[1] + " " + "Port Number: " + msg_fields[3]);
+							} catch (NumberFormatException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					});
+					
 				}
+				recPac.setLength(1024);
+
 			}
 			listSoc.close();
 			

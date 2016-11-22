@@ -197,8 +197,11 @@ public class ClientManager {
 		return null;
 	}
 	
-	public void sendChatMessage(String message, InetAddress tarAddr, Integer port){
-		senTh.sendChatMessage(message, tarAddr, port);
+	public void sendChatMessage(String message, InetAddress tarAddr, Integer port) throws UnknownHostException{
+		String msg = new String(GlobalVariables.CHAT_ACTION + GlobalVariables.delimiter + myName + 
+				GlobalVariables.delimiter + InetAddress.getLocalHost().getHostAddress() + GlobalVariables.delimiter + 
+				new Integer(this.recevingPort.getLocalPort()).toString() + GlobalVariables.delimiter + message);
+		senTh.sendChatMessage(msg, tarAddr, port);
 		for(ChatUIController chatCon: chatList){
 			if(chatCon.isTargetChat(tarAddr, port)){
 				chatCon.addDisplayLine("I said: " + message);
@@ -242,12 +245,16 @@ public class ClientManager {
 	public void receiveChatMessage(String message, InetAddress tarAddr, String name, Integer port) throws IOException{
 		for(ChatUIController chatCon: chatList){
 			if(chatCon.isTargetChat(tarAddr, port)){
+				System.out.println("Corresponding chat window found");
 				chatCon.addDisplayLine(tarAddr.getHostAddress() + " " + name + " said: " + message);
 				return;
 			}
 		}
+		for(ChatUIController chatCon: chatList){
+			System.out.println(chatCon.getTargetAddress().getHostAddress());
+		}
 		ChatUIController chatCon = new ChatUIController(tarAddr, port, this);
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ChatUI.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../ui/ChatUI.fxml"));
 		fxmlLoader.setController(chatCon);
 		AnchorPane rootLayout = (AnchorPane) fxmlLoader.load();
 		chatList.add(chatCon);
