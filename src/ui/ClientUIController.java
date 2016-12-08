@@ -175,7 +175,23 @@ public class ClientUIController extends AnchorPane{
 	
 	
 	public void registerManager(InetAddress serverAddr, Integer serverListPort) throws SocketException, UnknownHostException, SQLException{
-		if((myManager == null) || (myManager.getRegStat() == false)){
+		if((myManager == null) ){
+			Integer myLisPort = Integer.parseInt(myLisPortDispArea.getText());
+			Integer mySendPort = Integer.parseInt(this.mySendingPortDispArea.getText());
+			String myName = myNameDispArea.getText();
+			System.out.println(myName);
+			InetAddress myServer = serverAddr;
+			Integer myServerLisPort = serverListPort;
+			try {
+				myManager = new ClientManager(myName, myLisPort, mySendPort, myServer.getHostAddress(), myServerLisPort, this);
+				System.out.println("The host addr is: " + myServer.getHostAddress());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			myManager.init();
+		}else if(myManager.getRegStat() == false && myManager != null){
+			myManager.terminateManager();
 			Integer myLisPort = Integer.parseInt(myLisPortDispArea.getText());
 			Integer mySendPort = Integer.parseInt(this.mySendingPortDispArea.getText());
 			String myName = myNameDispArea.getText();

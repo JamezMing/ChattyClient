@@ -29,7 +29,7 @@ public final class ClientDataBaseManager {
 	public static void init(){
 		File dbFile = new File(DB_NAME);
 		
-		System.out.println(dbFile.exists());
+		System.out.println("Database file is created: " + dbFile.exists());
 		if(dbFile.exists()){
 			try {
 				db = SqlJetDb.open(dbFile, true);
@@ -118,6 +118,7 @@ public final class ClientDataBaseManager {
         	db.commit();
         	return res;
     	}catch(SqlJetException e){
+			System.out.println("An error in database has ocurred.");
     		return null;
     	}
     	

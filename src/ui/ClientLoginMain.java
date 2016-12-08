@@ -1,6 +1,9 @@
 package ui;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +27,7 @@ public class ClientLoginMain extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(ClientLoginMain.class.getResource("ClientLoginUI.fxml"));
             rootLayout = (AnchorPane) loader.load();
-
+            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("output.txt"))));
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);

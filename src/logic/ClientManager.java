@@ -88,7 +88,9 @@ public class ClientManager {
 		try{
 			System.out.println("Constructed");
 			recevingPort = new DatagramSocket(recPortNum);
+			recevingPort.setReuseAddress(true);
 			sendingPort = new DatagramSocket(sendPortNum);
+			sendingPort.setReuseAddress(true);
 			System.out.println("Content send to Constructer: " + addr);
 
 			hostAddr = InetAddress.getByName(addr);
@@ -143,7 +145,6 @@ public class ClientManager {
 			System.out.println("Content send to Constructer: " + addr);
 			e.printStackTrace();
 		}
-
 	}
 
 
