@@ -324,6 +324,12 @@ public class ClientManager {
 		new ClientTalkThread(msgSend, sendingPort, addr, recPort).start();
 	}
 	
+	public void requestUserInfo(String userName, InetAddress serverAddr, Integer serverPort) throws UnknownHostException{
+		String msgSend = new String(GlobalVariables.IMFORMATION_REQUEST_ACTION + GlobalVariables.delimiter + userName + GlobalVariables.delimiter + 
+				this.getName() + GlobalVariables.delimiter + InetAddress.getLocalHost().getHostAddress());
+		new ClientTalkThread(msgSend, sendingPort, serverAddr, serverPort).start();
+	}
+	
 	public boolean getRegStat(){
 		return isRegistered;
 	}
@@ -334,9 +340,14 @@ public class ClientManager {
 			GlobalVariables.delimiter + myName + GlobalVariables.delimiter + 
 			DatatypeConverter.printHexBinary(this.getPublicKey())), sendingPort, hostAddr, hostRecPort);
 		}
+		senTh.endThread();
+		lisTh.endThread();
 		recevingPort.close();
 		sendingPort.close();
 	}
+	
+	
+
 	
 	public void pushNewTimer(int delay){
 		ClientTimer timer = new ClientTimer(this);

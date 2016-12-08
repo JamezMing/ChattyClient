@@ -6,6 +6,7 @@ public class GlobalVariables {
 	public static final String DEREGISTER_ACTION = "der_a";
 	public static final String REGISTER_DENIED = "reg_d";
 	public static final String REGISTER_SUCCESS = "reg_s";
+	public static final String REGISTER_FULL = "reg_f";
 	public static final String PUBLISH_ACTION = "pub_a";
 	public static final String PUBLISH_SUCCESS = "pub_s";
 	public static final String PUBLISH_DENIED = "pub_d";

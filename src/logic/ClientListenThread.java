@@ -23,6 +23,10 @@ public class ClientListenThread extends Thread{
 		myManager = manager;
 	}
 	
+	public void endThread(){
+		isRunning = false;
+	}
+	
 	public void run(){
 		try {
 			byte[] buffer = new byte[1024];
@@ -61,12 +65,21 @@ public class ClientListenThread extends Thread{
 					});
 					
 				}
+				//reg_f%_1%_192.168.2.222%_80
+				else if(new String(recPac.getData()).startsWith(GlobalVariables.REGISTER_FULL)){
+					String str_receive = new String(recPac.getData(),0,recPac.getLength());
+					String[] msg_fields = str_receive.split(GlobalVariables.token);
+					InetAddress nextAddress = InetAddress.getByName(msg_fields[2]);
+					Integer nextPort = new Integer(msg_fields[3]);
+					myManager.disPlayMessageFromServer("The server is full. ");
+					myManager.disPlayMessageFromServer("Please try register on: ");
+					myManager.disPlayMessageFromServer(nextAddress.getHostAddress());
+					myManager.disPlayMessageFromServer(nextPort.toString());
+					myManager.popTimer();
+				}
 				recPac.setLength(1024);
-
 			}
 			listSoc.close();
-			
-
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

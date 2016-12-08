@@ -78,7 +78,12 @@ public class ClientUIController extends AnchorPane{
 				String[] listOfUsers = Arrays.copyOfRange(command.split(" -"), 1, command.split(" -").length);
 				myManager.publishClientInfo(InetAddress.getByName(serverAddrDispArea.getText()), Integer.parseInt(serverPortDispArea.getText()), isAva, listOfUsers);
 			}
-			//Chat "How are you?" 192.168.2.222 80
+			else if(command.length() >= 8 && command.split(" ")[0].equalsIgnoreCase("InformReq")){
+				String tarName = command.split(" ")[1];
+				InetAddress address = InetAddress.getByName(command.split(" ")[2]);
+				Integer recPort = new Integer(command.split(" ")[3]);
+			}
+			//InformReq James 192.168.2.222 8080
 
 			else{
 				command = String.format("I said: \n    %s \n", command);

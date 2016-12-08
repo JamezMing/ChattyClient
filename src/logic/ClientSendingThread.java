@@ -15,6 +15,7 @@ public class ClientSendingThread extends Thread{
 	private InetAddress hostAddr;
 	private ClientManager myManager;
 	private BufferedReader reader;
+	private boolean running = true;
 	
 	
 	public ClientSendingThread(DatagramSocket send, int dest, InetAddress addr, ClientManager manager){
@@ -33,6 +34,11 @@ public class ClientSendingThread extends Thread{
 			notify();
 		}
 	}
+	
+	public void endThread(){
+		running = false;
+	}
+	
 	
 	public void sendChatMessage(String message, InetAddress chatAddr, Integer recSoc){
 		new Thread(new Runnable(){
@@ -65,7 +71,7 @@ public class ClientSendingThread extends Thread{
 				System.out.println("Host Address Undefined, please enter a valid host address to continue");
 				break;
 			}
-			while(true){
+			while(running){
 				synchronized(this){
 					
 				wait();
@@ -90,7 +96,9 @@ public class ClientSendingThread extends Thread{
 		        	msg = msg.concat(keyStr);
 		        	System.out.println(msg);
 		        }
-		        
+		        else{
+		        	System.out.println(msg);
+		        }
 		        /*if(msg.substring(0, 5).equals(GlobalVariables.REGISTER_ACTION)){
 		        	String[] argtalk = msg.split(GlobalVariables.delimiter);
 		        	myManager.chatWithUser(argtalk[1], InetAddress.getByName(argtalk[3]), new Integer(argtalk[4]));
