@@ -78,10 +78,18 @@ public class ClientUIController extends AnchorPane{
 				String[] listOfUsers = Arrays.copyOfRange(command.split(" -"), 1, command.split(" -").length);
 				myManager.publishClientInfo(InetAddress.getByName(serverAddrDispArea.getText()), Integer.parseInt(serverPortDispArea.getText()), isAva, listOfUsers);
 			}
-			else if(command.length() >= 8 && command.split(" ")[0].equalsIgnoreCase("InformReq")){
+			else if(command.length() >= 8 && command.split(" ")[0].equalsIgnoreCase("FindReq")){
 				String tarName = command.split(" ")[1];
 				InetAddress address = InetAddress.getByName(command.split(" ")[2]);
 				Integer recPort = new Integer(command.split(" ")[3]);
+				myManager.requestUserInfo(tarName, address, recPort);
+			}
+			else if(command.length() >= 8 && command.split(" ")[0].equalsIgnoreCase("InformReq")){
+				Integer index = new Integer(command.split(" ")[1]);
+				myManager.requestHistoryMessage(index);
+			}
+			else if(command.length() >= 7 && command.split(" ")[0].equalsIgnoreCase("Request")){
+				myManager.requestInformation();
 			}
 			//InformReq James 192.168.2.222 8080
 

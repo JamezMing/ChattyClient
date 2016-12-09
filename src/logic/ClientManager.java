@@ -290,10 +290,10 @@ public class ClientManager {
 		String msg = new String(common.GlobalVariables.REGISTER_ACTION + GlobalVariables.delimiter + messageIndex.toString()
 				+ GlobalVariables.delimiter + myName + GlobalVariables.delimiter + InetAddress.getLocalHost().getHostAddress()
 				+ GlobalVariables.delimiter + this.recevingPort.getLocalPort());
+		this.myWinController.displayMessage("Registering to the server, index = " + messageIndex);
 		messageIndex++;
 		sendMessageServer(msg);
 	}
-	
 	
 	public void publishClientInfo(InetAddress serAddr, Integer recPort, boolean status, String[] listOfName) throws UnknownHostException{
 		String nameString = Arrays.toString(listOfName);
@@ -307,6 +307,7 @@ public class ClientManager {
 			+ GlobalVariables.delimiter + myName + GlobalVariables.delimiter + this.recevingPort.getLocalPort() + GlobalVariables.delimiter + 
 			GlobalVariables.STATUS_OFF + GlobalVariables.delimiter + nameString);
 		}
+		this.myWinController.displayMessage("Trying to publish to the server, index = " + messageIndex);
 		messageIndex++;
 		sendMessageServer(msg);
 	}
@@ -325,9 +326,21 @@ public class ClientManager {
 	}
 	
 	public void requestUserInfo(String userName, InetAddress serverAddr, Integer serverPort) throws UnknownHostException{
-		String msgSend = new String(GlobalVariables.IMFORMATION_REQUEST_ACTION + GlobalVariables.delimiter + userName + GlobalVariables.delimiter + 
-				this.getName() + GlobalVariables.delimiter + InetAddress.getLocalHost().getHostAddress());
+		String msgSend = new String(GlobalVariables.USER_INFO_REQUEST_ACTION + GlobalVariables.delimiter + userName + GlobalVariables.delimiter + 
+				this.getName() +  GlobalVariables.delimiter + recevingPort.getLocalPort());
 		new ClientTalkThread(msgSend, sendingPort, serverAddr, serverPort).start();
+		pushNewTimer(10000);
+	}
+	
+	public void requestInformation(){
+		String msgSend = new String(GlobalVariables.REQUEST_ACTION + GlobalVariables.delimiter + messageIndex.toString() + GlobalVariables.delimiter + this.getName());
+		messageIndex++;
+		sendMessageServer(msgSend);
+	}
+	
+	public void requestHistoryMessage(Integer index){
+		String msgSend = new String(GlobalVariables.IMFORMATION_REQUEST_ACTION + GlobalVariables.delimiter + index.toString() + GlobalVariables.delimiter + this.getName());
+		sendMessageServer(msgSend);
 	}
 	
 	public boolean getRegStat(){
@@ -346,8 +359,6 @@ public class ClientManager {
 		sendingPort.close();
 	}
 	
-	
-
 	
 	public void pushNewTimer(int delay){
 		ClientTimer timer = new ClientTimer(this);

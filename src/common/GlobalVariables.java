@@ -12,6 +12,8 @@ public class GlobalVariables {
 	public static final String PUBLISH_DENIED = "pub_d";
 	public static final String IMFORMATION_REQUEST_ACTION = "inq_a";
 	public static final String IMFORMATION_REQUEST_SUCCESS = "inq_s";
+	public static final String REQUEST_ACTION = "req_a";
+	public static final String REQUEST_SUCCESSFUL = "req_s";
 	public static final String USER_INFO_REQUEST_ACTION = "fiq_a";
 	public static final String USER_INFO_REQUEST_SUCCESS = "fiq_s";
 	public static final String USER_INFO_REQUEST_DENIED = "fiq_d";
