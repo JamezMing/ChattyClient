@@ -3,6 +3,7 @@ package ui;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -30,12 +31,29 @@ public class ChatUIController extends AnchorPane{
 	//Chat "String" Address
 	@FXML public void onClickSendButton(){
 		String msg = messageInputArea.getText();
-		try {
-			myManager.sendChatMessage(msg, targetAddr, tarPort);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String frag;
+		byte[] frag_b = new byte[140];
+		int numFrac = ((int)msg.getBytes().length/140) + 1; 
+		System.out.println("The total length of the message is: " + msg.getBytes().length);
+		for (int i = 0; i < numFrac; i++){
+			frag_b = new byte[140];
+			if((i+1)*140 < msg.getBytes().length){
+				System.arraycopy(msg.getBytes(), i*140, frag_b, 0, 140);
+				frag = new String(frag_b);
+				frag = new String("(" + (i+1) + "/" + numFrac + ")" + frag);
+			}else{
+				System.arraycopy(msg.getBytes(), i*140, frag_b, 0, msg.getBytes().length - i*140);
+				frag = new String(frag_b);
+				frag = new String("(" + (i+1) + "/" + numFrac + ")" + frag);
+			}
+			try {
+				myManager.sendChatMessage(frag, targetAddr, tarPort);
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 		messageInputArea.clear();
 	}
 	
