@@ -66,3 +66,6 @@ $RECYCLE.BIN/
 *.db
 *.db
 ClientData.db
+*.lck
+output.txt
+bin/ui/ClientUI.fxml

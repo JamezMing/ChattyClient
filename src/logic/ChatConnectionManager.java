@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import common.ClientLogger;
 import common.GlobalVariables;
 
 public class ChatConnectionManager {
@@ -35,7 +36,7 @@ public class ChatConnectionManager {
 		Integer myRecPort = recSoc.getLocalPort();
 		String msgStr = new String(GlobalVariables.CHAT_ACTION + GlobalVariables.delimiter + myManager.getName() + GlobalVariables.delimiter + myAddr.getHostAddress() + 
 				GlobalVariables.delimiter + myRecPort.toString() + GlobalVariables.delimiter + message);
-		System.out.println(msgStr);
+		ClientLogger.log(msgStr);
 		DatagramPacket msgPac = new DatagramPacket(msgStr.getBytes(), msgStr.length(), targetAddr, tarRecPort);
 		sendSoc.send(msgPac);
 	}

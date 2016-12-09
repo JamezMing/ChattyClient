@@ -11,6 +11,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.tmatesoft.sqljet.core.SqlJetException;
 
 import common.ClientDataBaseManager;
+import common.ClientLogger;
 import logic.ClientManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -84,7 +85,7 @@ public class ClientLoginUIController extends AnchorPane{
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ClientUI.fxml"));
 			ClientUIController cliCrl = new ClientUIController();
 			fxmlLoader.setController(cliCrl);
-			System.out.println(userName);
+			ClientLogger.log(userName);
 			AnchorPane rootLayout = (AnchorPane) fxmlLoader.load();
 			Stage newSta = new Stage();
 			newSta.setTitle("Chatty Client - " + userName);

@@ -6,6 +6,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 
+import common.ClientLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -36,7 +37,7 @@ public class ConnectInterfaceController extends AnchorPane{
 			if(serverPort > 65535){
 				throw new IllegalArgumentException("The port num is too big");
 			}
-			System.out.println("Server addr from father pane: " + serverAddr);
+			ClientLogger.log("Server addr from father pane: " + serverAddr);
 			fatherPane.registerManager(InetAddress.getByName(serverIPField.getText()), serverPort);
 			fatherPane.setServerAddr(serverAddr);
 			fatherPane.setServerPortNum(serverPort);

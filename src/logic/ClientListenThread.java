@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import org.tmatesoft.sqljet.core.SqlJetException;
 
+import common.ClientLogger;
 import common.GlobalVariables;
 import javafx.application.Platform;
 
@@ -33,7 +34,7 @@ public class ClientListenThread extends Thread{
 			DatagramPacket recPac = new DatagramPacket(buffer, 1024);
 			while(isRunning){
 				listSoc.receive(recPac);
-				System.out.println(new String(recPac.getData()));
+				ClientLogger.log(new String(recPac.getData()));
 				if(new String(recPac.getData()).startsWith(GlobalVariables.REGISTER_SUCCESS)){
 					String strRec = new String(recPac.getData(),0,recPac.getLength());
 					myManager.decodeSecret(new BigInteger(strRec.split(GlobalVariables.delimiter)[2], 16).toByteArray());
@@ -57,13 +58,13 @@ public class ClientListenThread extends Thread{
 				else if(new String(recPac.getData()).startsWith(GlobalVariables.CHAT_ACTION)){
 					String str_receive = new String(recPac.getData(),0,recPac.getLength());
 					String[] msg_fields = str_receive.split(GlobalVariables.token);
-					System.out.println("Chat Message Received");
+					ClientLogger.log("Chat Message Received");
 					InetAddress addr = InetAddress.getByName(msg_fields[2]);
 					Platform.runLater(new Runnable(){
 						public void run(){
 							try {
 								myManager.receiveChatMessage(msg_fields[4], addr, msg_fields[1], new Integer(msg_fields[3]));
-								System.out.println("Addr: " + msg_fields[2] + " " +  "Name: " + msg_fields[1] + " " + "Port Number: " + msg_fields[3]);
+								ClientLogger.log("Addr: " + msg_fields[2] + " " +  "Name: " + msg_fields[1] + " " + "Port Number: " + msg_fields[3]);
 							} catch (NumberFormatException | IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import common.ClientLogger;
 import logic.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,8 +59,8 @@ public class ClientUIController extends AnchorPane{
 		}else{
 			String command = messageInputBox.getText();
 			if(command.equalsIgnoreCase("Register") && myManager.getRegStat()==false){
-				System.out.println(serverAddrDispArea.getText());
-				System.out.println(serverPortDispArea.getText());
+				ClientLogger.log(serverAddrDispArea.getText());
+				ClientLogger.log(serverPortDispArea.getText());
 				myManager.registerClient(InetAddress.getByName(serverAddrDispArea.getText()), Integer.parseInt(serverPortDispArea.getText()));
 			}
 			else if(command.equalsIgnoreCase("Register") && myManager.getRegStat()==true){
@@ -96,7 +97,6 @@ public class ClientUIController extends AnchorPane{
 			else{
 				command = String.format("I said: \n    %s \n", command);
 				displayArray.add(command);
-				System.out.println(displayArray.size());
 				this.refreshDisplay();
 			}
 		}
@@ -154,7 +154,7 @@ public class ClientUIController extends AnchorPane{
 		String addr;
 		try {
 			addr = InetAddress.getLocalHost().getHostAddress();
-			System.out.println(addr);
+			ClientLogger.log(addr);
 			myAddrDispArea.setText(addr);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -168,7 +168,7 @@ public class ClientUIController extends AnchorPane{
 	public void registerManager(String name, int recPortNum, int sendPortNum, String addr, int hostPortNum, byte[] pubKey, byte[] secKey){
 		if((myManager == null)){
 			try {
-				System.out.println("Resume");
+				ClientLogger.log("Resume");
 				myManager = new ClientManager(name, recPortNum, sendPortNum, addr, hostPortNum, pubKey, secKey, this);
 				myManager.init();
 			} catch (SQLException e) {
@@ -192,12 +192,12 @@ public class ClientUIController extends AnchorPane{
 			Integer myLisPort = Integer.parseInt(myLisPortDispArea.getText());
 			Integer mySendPort = Integer.parseInt(this.mySendingPortDispArea.getText());
 			String myName = myNameDispArea.getText();
-			System.out.println(myName);
+			ClientLogger.log(myName);
 			InetAddress myServer = serverAddr;
 			Integer myServerLisPort = serverListPort;
 			try {
 				myManager = new ClientManager(myName, myLisPort, mySendPort, myServer.getHostAddress(), myServerLisPort, this);
-				System.out.println("The host addr is: " + myServer.getHostAddress());
+				ClientLogger.log("The host addr is: " + myServer.getHostAddress());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -208,12 +208,12 @@ public class ClientUIController extends AnchorPane{
 			Integer myLisPort = Integer.parseInt(myLisPortDispArea.getText());
 			Integer mySendPort = Integer.parseInt(this.mySendingPortDispArea.getText());
 			String myName = myNameDispArea.getText();
-			System.out.println(myName);
+			ClientLogger.log(myName);
 			InetAddress myServer = serverAddr;
 			Integer myServerLisPort = serverListPort;
 			try {
 				myManager = new ClientManager(myName, myLisPort, mySendPort, myServer.getHostAddress(), myServerLisPort, this);
-				System.out.println("The host addr is: " + myServer.getHostAddress());
+				ClientLogger.log("The host addr is: " + myServer.getHostAddress());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

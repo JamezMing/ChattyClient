@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import common.ClientLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -34,7 +35,7 @@ public class ChatUIController extends AnchorPane{
 		String frag;
 		byte[] frag_b = new byte[140];
 		int numFrac = ((int)msg.getBytes().length/140) + 1; 
-		System.out.println("The total length of the message is: " + msg.getBytes().length);
+		ClientLogger.log("The total length of the message is: " + msg.getBytes().length);
 		for (int i = 0; i < numFrac; i++){
 			frag_b = new byte[140];
 			if((i+1)*140 < msg.getBytes().length){
@@ -79,7 +80,7 @@ public class ChatUIController extends AnchorPane{
 	public boolean isTargetChat(InetAddress tarAddr, Integer port){
 		
 		if(targetAddr.equals(tarAddr) || tarPort == port){
-			System.out.println("Target Found");
+			ClientLogger.log("Target Found");
 			return true;
 		}
 		else{

@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import javax.xml.bind.DatatypeConverter;
 
+import common.ClientLogger;
 import common.GlobalVariables;
 
 public class ClientSendingThread extends Thread{
@@ -19,12 +20,12 @@ public class ClientSendingThread extends Thread{
 	
 	
 	public ClientSendingThread(DatagramSocket send, int dest, InetAddress addr, ClientManager manager){
-		System.out.println("Thread start");
+		ClientLogger.log("Thread start");
 		hostSoc = dest;
 		sendSoc = send;
 		hostAddr = addr;
 		myManager = manager;
-		System.out.println("Host Addr rec by thread: " + hostAddr.getHostAddress());
+		ClientLogger.log("Host Addr rec by thread: " + hostAddr.getHostAddress());
 	}
 	
 	public void writeBufferReader(String message){
@@ -46,7 +47,7 @@ public class ClientSendingThread extends Thread{
 			InetAddress chatAddr;
 			Integer recSoc;
 			public void run(){
-				System.out.println("Chat message sent thread created");
+				ClientLogger.log("Chat message sent thread created");
 				DatagramPacket pac = new DatagramPacket(message.getBytes(), message.length(), chatAddr, recSoc);
 				try {
 					sendSoc.send(pac);
@@ -68,7 +69,7 @@ public class ClientSendingThread extends Thread{
 	public void run(){
 		try{			
 			while(hostAddr == null){
-				System.out.println("Host Address Undefined, please enter a valid host address to continue");
+				ClientLogger.log("Host Address Undefined, please enter a valid host address to continue");
 				break;
 			}
 			while(running){
@@ -77,10 +78,10 @@ public class ClientSendingThread extends Thread{
 				wait();
 				String msg;
 				while ((msg = reader.readLine()) == null) {
-					System.out.println("Preparing Reader...");
+					ClientLogger.log("Preparing Reader...");
 					Thread.sleep(100);
 		        }
-				System.out.println(msg);
+				ClientLogger.log(msg);
 
 		        //Temp Solution 
 		        if(msg.substring(0, 5).equals(GlobalVariables.REGISTER_ACTION)){
@@ -89,15 +90,15 @@ public class ClientSendingThread extends Thread{
 		        	}
 		        	String keyStr = new String(GlobalVariables.delimiter + DatatypeConverter.printHexBinary(myManager.getPublicKey()));
 		        	msg = msg.concat(keyStr);
-		        	System.out.println(msg);
+		        	ClientLogger.log(msg);
 		        }
 		        else if(!msg.substring(0,5).equals(GlobalVariables.USER_INFO_REQUEST_ACTION)){
 		        	String keyStr = new String(GlobalVariables.delimiter + DatatypeConverter.printHexBinary(myManager.getSecretKey()));
 		        	msg = msg.concat(keyStr);
-		        	System.out.println(msg);
+		        	ClientLogger.log(msg);
 		        }
 		        else{
-		        	System.out.println(msg);
+		        	ClientLogger.log(msg);
 		        }
 		        /*if(msg.substring(0, 5).equals(GlobalVariables.REGISTER_ACTION)){
 		        	String[] argtalk = msg.split(GlobalVariables.delimiter);

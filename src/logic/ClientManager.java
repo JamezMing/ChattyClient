@@ -21,6 +21,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.tmatesoft.sqljet.core.SqlJetException;
 
 import common.ClientDataBaseManager;
+import common.ClientLogger;
 import common.GlobalVariables;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -55,12 +56,12 @@ public class ClientManager {
 
 	public ClientManager(int recPortNum, int sendPortNum, String addr, int hostPortNum, ClientUIController myController) throws SQLException{
 		try{
-			System.out.println("Constructed");
+			ClientLogger.log("Constructed");
 			recevingPort = new DatagramSocket(recPortNum);
 			sendingPort = new DatagramSocket(sendPortNum);
-			System.out.println("Content send to Constructer: " + addr);
+			ClientLogger.log("Content send to Constructer: " + addr);
 			hostAddr = InetAddress.getByName(addr);
-			System.out.println("The host address in constructor: " + hostAddr.getHostAddress());
+			ClientLogger.log("The host address in constructor: " + hostAddr.getHostAddress());
 			hostRecPort = hostPortNum;
 			myName = new String("Default");
 			sigGen = new ClientSignatureGen();
@@ -73,12 +74,12 @@ public class ClientManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}catch (SocketException e){
-			System.out.println("Socket Failure");
+			ClientLogger.log("Socket Failure");
 			e.printStackTrace();
 			//TODO
 		} catch(UnknownHostException e){
-			System.out.println("Address Failure");
-			System.out.println("Content send to Constructer: " + addr);
+			ClientLogger.log("Address Failure");
+			ClientLogger.log("Content send to Constructer: " + addr);
 			e.printStackTrace();
 		}
 		
@@ -86,17 +87,17 @@ public class ClientManager {
 	
 	public ClientManager(String name, int recPortNum, int sendPortNum, String addr, int hostPortNum, ClientUIController myController) throws SQLException{
 		try{
-			System.out.println("Constructed");
+			ClientLogger.log("Constructed");
 			recevingPort = new DatagramSocket(recPortNum);
 			recevingPort.setReuseAddress(true);
 			sendingPort = new DatagramSocket(sendPortNum);
 			sendingPort.setReuseAddress(true);
-			System.out.println("Content send to Constructer: " + addr);
+			ClientLogger.log("Content send to Constructer: " + addr);
 
 			hostAddr = InetAddress.getByName(addr);
 			hostRecPort = hostPortNum;
 			sigGen = new ClientSignatureGen();
-			System.out.println("The host address in constructor: " + hostAddr.getHostAddress());
+			ClientLogger.log("The host address in constructor: " + hostAddr.getHostAddress());
 
 			myWinController = myController;
 			myName = name;	
@@ -108,12 +109,12 @@ public class ClientManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SocketException e){
-			System.out.println("Socket Failure");
+			ClientLogger.log("Socket Failure");
 			e.printStackTrace();
 			//TODO
 		} catch(UnknownHostException e){
-			System.out.println("Address Failure");
-			System.out.println("Content send to Constructer: " + addr);
+			ClientLogger.log("Address Failure");
+			ClientLogger.log("Content send to Constructer: " + addr);
 			e.printStackTrace();
 		}
 		
@@ -122,13 +123,13 @@ public class ClientManager {
 	
 	public ClientManager(String name, int recPortNum, int sendPortNum, String addr, int hostPortNum, byte[] pubKey, byte[] secKey, ClientUIController myController) throws SQLException{
 		try{
-			System.out.println("Constructed");
+			ClientLogger.log("Constructed");
 			recevingPort = new DatagramSocket(recPortNum);
 			sendingPort = new DatagramSocket(sendPortNum);
-			System.out.println("Content send to Constructer: " + addr);
+			ClientLogger.log("Content send to Constructer: " + addr);
 		
 			hostAddr = InetAddress.getByName(addr);
-			System.out.println("The host address in constructor: " + hostAddr.getHostAddress());
+			ClientLogger.log("The host address in constructor: " + hostAddr.getHostAddress());
 			hostRecPort = hostPortNum;
 			sigGen = new ClientSignatureGen();
 			myWinController = myController;
@@ -137,12 +138,12 @@ public class ClientManager {
 			secretKey = secKey;
 			isRegistered = true;
 		}catch (SocketException e){
-			System.out.println("Socket Failure");
+			ClientLogger.log("Socket Failure");
 			e.printStackTrace();
 			//TODO
 		} catch(UnknownHostException e){
-			System.out.println("Address Failure");
-			System.out.println("Content send to Constructer: " + addr);
+			ClientLogger.log("Address Failure");
+			ClientLogger.log("Content send to Constructer: " + addr);
 			e.printStackTrace();
 		}
 	}
@@ -228,7 +229,7 @@ public class ClientManager {
 	                 Platform.runLater(new Runnable() {
 	                     @Override
 	                     public void run() {
-	                         System.out.println("Application Closed by click to Close Button(X)");
+	                         ClientLogger.log("Application Closed by click to Close Button(X)");
 	                         chatList.remove(chatCon);
 	                     }
 	                 });
@@ -236,7 +237,7 @@ public class ClientManager {
 	        });
 		    newSta.show();
 		} catch (IOException e) {
-			System.out.println("The fxml file is not found");
+			ClientLogger.log("The fxml file is not found");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -246,13 +247,13 @@ public class ClientManager {
 	public void receiveChatMessage(String message, InetAddress tarAddr, String name, Integer port) throws IOException{
 		for(ChatUIController chatCon: chatList){
 			if(chatCon.isTargetChat(tarAddr, port)){
-				System.out.println("Corresponding chat window found");
+				ClientLogger.log("Corresponding chat window found");
 				chatCon.addDisplayLine(tarAddr.getHostAddress() + " " + name + " said: " + message);
 				return;
 			}
 		}
 		for(ChatUIController chatCon: chatList){
-			System.out.println(chatCon.getTargetAddress().getHostAddress());
+			ClientLogger.log(chatCon.getTargetAddress().getHostAddress());
 		}
 		ChatUIController chatCon = new ChatUIController(tarAddr, port, this);
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../ui/ChatUI.fxml"));
@@ -268,7 +269,7 @@ public class ClientManager {
                  Platform.runLater(new Runnable() {
                      @Override
                      public void run() {
-                         System.out.println("Application Closed by click to Close Button(X)");
+                         ClientLogger.log("Application Closed by click to Close Button(X)");
                          chatList.remove(chatCon);
                      }
                  });

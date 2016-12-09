@@ -10,6 +10,8 @@ import javax.crypto.KeyAgreement;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.*;
 
+import common.ClientLogger;
+
 
 public class ClientSignatureGen{
 	DHParameterSpec dhSkipParamSpec;
@@ -55,7 +57,7 @@ public class ClientSignatureGen{
 	
 	public byte[] getPublicKey(){
 		if(isInit == false){
-			System.out.println("Generator has not been initiated yet.");
+			ClientLogger.log("Generator has not been initiated yet.");
 			return null;
 		}
 		return myKeyPair.getPublic().getEncoded();
@@ -63,7 +65,7 @@ public class ClientSignatureGen{
 	
 	public byte[] getPrivateKey(){
 		if(isInit = false){
-			System.out.println("Generator has not been initiated yet.");
+			ClientLogger.log("Generator has not been initiated yet.");
 			return null;
 		}
 		return myKeyPair.getPrivate().getEncoded();

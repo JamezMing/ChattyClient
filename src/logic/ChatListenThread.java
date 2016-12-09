@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import org.tmatesoft.sqljet.core.SqlJetException;
 
+import common.ClientLogger;
 import common.GlobalVariables;
 
 
@@ -31,16 +32,16 @@ public class ChatListenThread extends Thread{
 			DatagramPacket recPac = new DatagramPacket(buffer, 1024);
 			while(isRunning){
 				listSoc.receive(recPac);
-				System.out.println(new String(recPac.getData()));
+				ClientLogger.log(new String(recPac.getData()));
 				if(new String(recPac.getData()).startsWith(GlobalVariables.CHAT_ACTION)){
 					//TODO
 					String str_receive = new String(recPac.getData(),0,recPac.getLength()) +   
 		                    " from " + recPac.getAddress().getHostAddress() + ":" + recPac.getPort();  
-					System.out.println(str_receive);
+					ClientLogger.log(str_receive);
 					recPac.setLength(1024);
 				}
 			}
-			System.out.println("The chat thread is terminated");
+			ClientLogger.log("The chat thread is terminated");
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

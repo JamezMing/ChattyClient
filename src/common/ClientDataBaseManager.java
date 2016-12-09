@@ -29,7 +29,7 @@ public final class ClientDataBaseManager {
 	public static void init(){
 		File dbFile = new File(DB_NAME);
 		
-		System.out.println("Database file is created: " + dbFile.exists());
+		ClientLogger.log("Database file is created: " + dbFile.exists());
 		if(dbFile.exists()){
 			try {
 				db = SqlJetDb.open(dbFile, true);
@@ -77,7 +77,7 @@ public final class ClientDataBaseManager {
 	    try {
 	      if (!cursor.eof()) {
 	        do {
-	          System.out.println(cursor.getRowId() + " : " + 
+	        	ClientLogger.log(cursor.getRowId() + " : " + 
 	                             cursor.getString(USER_NAME_FIELD) + " has sending port " + 
 	                             cursor.getString(USER_SENDPORT_FIELD) + " and receving port " + 
 	                             cursor.getString(USER_RECEIVEPORT_FIELD) + " and secret key " + cursor.getString(USER_KEY_FIELD) + cursor.getString(USER_KEY_ADDRESS_FIELD));
@@ -113,12 +113,12 @@ public final class ClientDataBaseManager {
     	try{
     		db.beginTransaction(SqlJetTransactionMode.READ_ONLY);
     		ISqlJetCursor cursor = db.getTable(TABLE_NAME).lookup(NAME_INDEX, name);
-        	System.out.println(new String(cursor.getValue(USER_NAME_FIELD) + Long.toString(cursor.getInteger(USER_SENDPORT_FIELD))));
+    		ClientLogger.log(new String(cursor.getValue(USER_NAME_FIELD) + Long.toString(cursor.getInteger(USER_SENDPORT_FIELD))));
         	String[] res = {cursor.getString(USER_NAME_FIELD),  cursor.getString(USER_SENDPORT_FIELD), cursor.getString(USER_RECEIVEPORT_FIELD), cursor.getString(USER_KEY_FIELD), cursor.getString(PUBLIC_KEY_FIELD), (String)cursor.getValue(USER_KEY_ADDRESS_FIELD), cursor.getString(USER_KEY_PORT_FIELD)};
         	db.commit();
         	return res;
     	}catch(SqlJetException e){
-			System.out.println("An error in database has ocurred.");
+    		ClientLogger.log("An error in database has ocurred.");
     		return null;
     	}
     	
@@ -128,9 +128,8 @@ public final class ClientDataBaseManager {
     	try{
     		db.beginTransaction(SqlJetTransactionMode.READ_ONLY);
     		ISqlJetCursor cursor = db.getTable(TABLE_NAME).lookup(PORT_INDEX, recPort);
-        	System.out.println(new String(cursor.getValue(USER_NAME_FIELD) + Long.toString(cursor.getInteger(USER_SENDPORT_FIELD))));
+    		ClientLogger.log(new String(cursor.getValue(USER_NAME_FIELD) + Long.toString(cursor.getInteger(USER_SENDPORT_FIELD))));
         	String[] res = {cursor.getString(USER_NAME_FIELD),  cursor.getString(USER_SENDPORT_FIELD), cursor.getString(USER_RECEIVEPORT_FIELD), cursor.getString(USER_KEY_FIELD), cursor.getString(PUBLIC_KEY_FIELD), (String)cursor.getValue(USER_KEY_ADDRESS_FIELD), cursor.getString(USER_KEY_PORT_FIELD)};
-        	System.out.println(res.length);
         	db.commit();
         	return res;
     	}catch(SqlJetException e){
@@ -143,9 +142,8 @@ public final class ClientDataBaseManager {
     	try{
     		db.beginTransaction(SqlJetTransactionMode.READ_ONLY);
     		ISqlJetCursor cursor = db.getTable(TABLE_NAME).lookup(NAMEPORT_INDEX, name, recPort);
-        	System.out.println(new String(cursor.getValue(USER_NAME_FIELD) + Long.toString(cursor.getInteger(USER_SENDPORT_FIELD))));
+    		ClientLogger.log(new String(cursor.getValue(USER_NAME_FIELD) + Long.toString(cursor.getInteger(USER_SENDPORT_FIELD))));
         	String[] res = {cursor.getString(USER_NAME_FIELD),  cursor.getString(USER_SENDPORT_FIELD), cursor.getString(USER_RECEIVEPORT_FIELD), cursor.getString(USER_KEY_FIELD), cursor.getString(PUBLIC_KEY_FIELD), (String)cursor.getValue(USER_KEY_ADDRESS_FIELD), cursor.getString(USER_KEY_PORT_FIELD)};
-        	System.out.println(res.length);
         	db.commit();
         	return res;
     	}catch(SqlJetException e){
